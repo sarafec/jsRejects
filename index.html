@@ -70,13 +70,13 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 			float: left;
 			margin-top: 10px;
 			max-height: 300px;
-			max-width: 300px;
+			max-width: 420px;
 		}
 
 		.chart-entry {
 			margin: 0px;
-			margin-bottom: 5px;
 			cursor: pointer;
+			font-size: 18px;
 		}
 
 		.chart-entry:focus {
@@ -86,7 +86,15 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		.chart-container {
 			display: inline-block;
 			margin-left: 10px;
-			width: 60%;
+			width: 55%;
+		}
+
+		.chart-entry-source {
+			font-size: 14px;
+			margin-top: 0px;
+			margin-bottom: 10px;
+			margin-left: 50px;
+			color: #313639;
 		}
 
 		.content-container{
@@ -190,6 +198,17 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 			color: 	#dbd8d8;
 			margin-right: 10px;
 			font-size: 19px;
+		}
+
+		@media screen and (max-width: 900px){
+			.chart-container{
+				width: 80%;
+				margin-top: 20px;
+				margin-left: -50px;
+			}
+			.chart-list {
+				width: 100%;
+			}
 		}
 
 	</style>

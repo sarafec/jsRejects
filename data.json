@@ -2,6 +2,7 @@
 	{
 		"id": "1",
 		"title": "Mobile Phone Subscriptions in North Africa",
+		"source": "UN Data, Millennium Development Goals",
 		"colors": ["#1f6673"],
 		"type": "phone-line",
 		"data": [
@@ -15,6 +16,7 @@
 	{
 		"id": "2",
 		"title": "Teen Births in the USA",
+		"source": "Centers for Disease Control and Prevention",
 		"colors": ["#1f6673"],
 		"type": "birth-line",
 		"data": [
@@ -327,7 +329,8 @@
 	}, 
 	{
 		"id": "3",
-		"title": "Education Expenditure by percent of GDP",
+		"title": "Education Expenditure by percent of GDP, 2014",
+		"source": "The World Bank",
 		"colors": ["#1f6673"],
 		"type": "education-bar",
 		"data": [
@@ -359,7 +362,8 @@
 	},
 	{
 		"id": "4",
-		"title": "Health Expenditure by percent of GDP",
+		"title": "Health Expenditure by percent of GDP, 2011-2013",
+		"source": "Organization for Economic Cooperation and Development",
 		"colors": ["#1f6673"],
 		"type": "health-bar",
 		"data": [
@@ -386,15 +390,16 @@
 	{
 		"id": "5",
 		"title": "Refugees by Region",
+		"source": "United Nations High Commissioner for Refugees",
 		"colors": ["#1f6673"],
 		"type": "refugee-bar",
 		"data": [
-			{"region": "Africa", "values": [{"category": "Refugees", "value": "4126779"},{"category": "Internally Displaced Persons", "value": "9920194"},{"category": "Stateless Persons", "value": "721438"}]},
-			{"region": "Asia", "values": [{"category": "Refugees", "value": "7942132"},{"category": "Internally Displaced Persons", "value": "15179635"},{"category": "Stateless Persons", "value": "1959247"}]},
-			{"region": "Europe", "values": [{"category": "Refugees", "value": "1500505"},{"category": "Internally Displaced Persons", "value": "1130639"},{"category": "Stateless Persons", "value": "600348"}]},
-			{"region": "Latin America", "values": [{"category": "Refugees", "value": "352668"},{"category": "Internally Displaced Persons", "value": "6044151"},{"category": "Stateless Persons", "value": "211230"}]},
-			{"region": "Northern America", "values": [{"category": "Refugees", "value": "416385"},{"category": "Internally Displaced Persons", "value": ""},{"category": "Stateless Persons", "value": ""}]},
-			{"region": "Oceania", "values": [{"category": "Refugees", "value": "46847"},{"category": "Internally Displaced Persons", "value": ""},{"category": "Stateless Persons", "value": ""}]}
+			{"region": "Africa", "Refugees": "4126779", "Internally Displaced Persons": "9920194", "Stateless Persons": "721438"},
+			{"region": "Asia", "Refugees": "7942132", "Internally Displaced Persons": "15179635", "Stateless Persons": "1959247"},
+			{"region": "Europe", "Refugees": "1500505", "Internally Displaced Persons": "1130639","Stateless Persons": "600348"},
+			{"region": "Latin America", "Refugees": "352668", "Internally Displaced Persons": "6044151", "Stateless Persons": "211230"},
+			{"region": "Northern America", "Refugees": "416385", "Internally Displaced Persons": "", "Stateless Persons": ""},
+			{"region": "Oceania", "Refugees": "46847", "Internally Displaced Persons": "", "Stateless Persons": ""}
 		]
 	}
 ] 

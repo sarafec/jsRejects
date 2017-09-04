@@ -27,14 +27,19 @@ let getData = function(){
 function createChartEntryList(data){
 	let chartLibraryContainer = document.querySelector(".chart-list");
 
-	for(let i = 0; i < data.length - 1; i++){
+	for(let i = 0; i < data.length; i++){
 		let tempDiv = document.createElement("li");
 		tempDiv.classList.add("chart-entry");
 		tempDiv.textContent = data[i].title;
 		tempDiv.setAttribute("data-identifier", data[i].id);
 		tempDiv.setAttribute("tabindex", 0);
 
+		let sourceDiv = document.createElement("div");
+		sourceDiv.classList.add("chart-entry-source");
+		sourceDiv.textContent = "Source: " + data[i].source;
+
 		chartLibraryContainer.appendChild(tempDiv);
+		chartLibraryContainer.appendChild(sourceDiv);
 
 	}
 
@@ -154,7 +159,7 @@ function createPhoneSubChart(metaData, data, svg, margin, width, height, g) {
 
 	lines.append("text")
 		.datum(function(d, i) { return {id: d.country, value: d.values[d.values.length - 1]}; })
-		.attr("transform", function(d, i) { return "translate(" + x(parseYear(d.value.year)) + "," + y(d.value.value) + ")"; })
+		.attr("transform", function(d, i) { return "translate(" + x(parseYear(d.value.year)) + "," + ( y(d.value.value) * 1.15) + ")"; })
 		.attr("x", -42)
 		.attr("y", -10)
 		.attr("dy", "0.35em")
@@ -338,91 +343,91 @@ function createHealthExpenditureChart(metaData, data, svg, margin, width, height
 			.style("transform", "translateY(5px) rotate(-25deg)");
 
 }		
-/*
+
 function createRefugeeStackedChart(metaData, data, svg, margin, width, height, g){
-	let max = d3.max(d3.entries(data), function(d) {
-		return d3.max(d3.entries(d.value), function(e, i) {
-			if(i === 1){
-      			return d3.max(e.value, function(f) { return +f.value; });
-      		}
-  		});
-	});
+	let x = d3.scaleBand().rangeRound([0, width]).padding(0.5),
+		y = d3.scaleLinear().rangeRound([height, 0]);
 
-	let x = d3.scaleBand().rangeRound([0, width]).padding(0.05),
-	y = d3.scaleLinear().rangeRound([height, 0]);
+		//used to store regions
+		let keys = Object.keys(data[0]).splice(1);
+		let regionRange = data.map(function(d) { return d.region; });
+		let dataVals = [];
 
-	//let categories = data[0].values.map(function(d) { return d.category});
-	let regionRange = data.map(function(d) { return d.region; });
-	let dataOnly = data.map(function(d) { return d.values });
-	console.log(dataOnly);
-	//let stack = d3.stack().keys(categories);
-	//let series = stack(dataOnly);
-			//used to store region data
-	var keys = data[0].values.map(function(d) { return d.category});
+		data.forEach(function(d, i){
+			let y0 = d["Refugees"];
+			let y1 = d["Internally Displaced Persons"];
+			let y2 = d["Stateless Persons"];
 
-	//sort data
-	//data.sort(function(a, b) { return b.value - a.value; });
+			dataVals.push(y0);
+			dataVals.push(y1);
+			dataVals.push(y2);
+		})
 
-	//define domains based on data
-	x.domain(regionRange);
-	y.domain([0, max]);
+		//sort data
+		data.sort(function(a, b) { return b.total - a.total; });
 
-	//append data and rects to svg
-	g.append("g")
-		.selectAll("g")
-		.data(d3.stack().keys(keys)(data))
-		.enter()
-		.append("g")
-		.attr("fill", metaData.colors[0])
-		.selectAll("rect")
-		.data(function(d) { console.log(d[1]); return d; })
-		.enter()
-		.append("rect")
-		.attr("x", function(d) { return x(d.data.region); })
-		.attr("y", function(d) { return y(d[1]); })
-		.attr("height", function(d) { return y(d[0]) - y(d[1]); })
-		.attr("width", x.bandwidth());
+		//define domains based on data
+		x.domain(regionRange);
+		y.domain([0, d3.max(dataVals, function(d) { return +d; })]);
 
-	//apppend x axis
-	g.append("g")
-		.attr("class", "x-axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x));
+		//append data and rects to svg
+		g.append("g")
+			.selectAll("g")
+			.data(d3.stack().keys(keys)(data))
+			.enter()
+			.append("g")
+			.attr("fill", metaData.colors[0])
+			.selectAll("rect")
+			.data(function(d) { return d; })
+			.enter()
+			.append("rect")
+			.attr("x", function(d) { return x(d.data.region); })
+			.attr("y", function(d) { return y(d[1]); })
+			.attr("height", function(d) { return y(d[0]) - y(d[1]); })
+			.attr("width", x.bandwidth());
 
-	//append y axis
-	g.append("g")
-		.attr("class", "y-axis")
-		.call(d3.axisLeft(y))
-		//append y axis label
-		.append("text")
-		.attr("x", -10)
-		.attr("y", -75)
-		.attr("transform", "rotate(-90)")
-		.attr("dy", "0.32em")
-		.attr("fill", "#000")
-		.text("Number of Persons")
+		//apppend x axis
+		g.append("g")
+			.attr("class", "x-axis")
+			.style("stroke-width", ".1")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x));
 
-	let legend = g.append("g")
-		.attr("font-family", "sans-serif")
-		.attr("font-size", 10)
-		.attr("text-anchor", "end")
-		.selectAll("g")
-		.data(keys.slice().reverse())
-		.enter()
-		.append("g")
-		.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-	legend.append("rect")
-		.attr("x", width - 19)
-		.attr("width", 19)
-		.attr("height", 19)
-		.attr("fill", metaData.colors[0]);
-	legend.append("text")
-		.attr("x", width - 24)
-		.attr("y", 9.5)
-		.attr("dy", "0.32em")
-		.text(function(d) { return d; }); 
+		//append y axis
+		g.append("g")
+			.attr("class", "y-axis")
+			.style("stroke-width", ".1")
+			.call(d3.axisLeft(y))
+			//append y axis label
+			.append("text")
+			.attr("x", 0)
+			.attr("y", 10)
+			.attr("transform", "rotate(-90)")
+			.attr("dy", "0.32em")
+			.attr("fill", "#000")
+			.text("Number of Persons")
+
+		let legend = g.append("g")
+			.attr("font-family", "sans-serif")
+			.attr("font-size", 10)
+			.attr("text-anchor", "end")
+			.selectAll("g")
+			.data(keys.slice().reverse())
+			.enter()
+			.append("g")
+			.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+		legend.append("rect")
+			.attr("x", width - 19)
+			.attr("width", 19)
+			.attr("height", 19)
+			.attr("fill", metaData.colors[0]);
+		legend.append("text")
+			.attr("x", width - 24)
+			.attr("y", 9.5)
+			.attr("dy", "0.32em")
+			.text(function(d) { return d; });
 
 }
-*/
+
 
 getData();
