@@ -4,8 +4,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<title>Earlier Work | Sara Fecadu</title>
+	<script src="
+https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Roboto+Condensed" rel="stylesheet">
 	<link rel="icon" type="image/png" href="assets/favicon.png">
+	<script src="chart.js"></script>
 	<style>
 		body{
 			background-color: #dbd8d8;
@@ -60,6 +63,30 @@
 			right: 0;
 			position: fixed;
 			border-bottom: black solid 2px;
+		}
+
+		.chart-list {
+			display: inline-block;
+			float: left;
+			margin-top: 10px;
+			max-height: 300px;
+			max-width: 300px;
+		}
+
+		.chart-entry {
+			margin: 0px;
+			margin-bottom: 5px;
+			cursor: pointer;
+		}
+
+		.chart-entry:focus {
+			outline: thick dotted cadetblue;
+		}
+
+		.chart-container {
+			display: inline-block;
+			margin-left: 10px;
+			width: 60%;
 		}
 
 		.content-container{
@@ -176,11 +203,16 @@
 	</header>
 
 	<div class="content-container">
-	<!--
 		<div class="datavis-container">
 			<h3 class="projects-title">Data Visualizations</h3>
+			<div class="chart-list"></div>
+			<div class="chart-container">
+				<svg class="chart" viewBox="0 0 600 310"
+  preserveAspectRatio="xMidYMin meet"></svg>
+			</div>
+
 		</div>
-	-->
+
 		<div class="projects-container">
 			<h3 class="projects-title">Projects</h3>
 			<div class="projects-container">
