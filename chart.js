@@ -5,23 +5,21 @@ let getData = function(){
 	var request = new XMLHttpRequest();
 	request.open('GET', 'data.json', true);
 	request.onload = function() {
-	  if (request.status >= 200 && request.status < 400) {
-	    var data = JSON.parse(request.responseText);
-	    chartData = data;
-	    return createChartEntryList(data);
-	  } else {
-	    // We reached our target server, but it returned an error
-	    console.log("error!");
-
-	  }
+		if (request.status >= 200 && request.status < 400) {
+			var data = JSON.parse(request.responseText);
+			chartData = data;
+			return createChartEntryList(data);
+		} else {
+		// We reached our target server, but it returned an error
+			console.log("error!");
+		}
 	};
 	request.onerror = function() {
-	  // There was a connection error of some sort
-	  console.log("connection error!");
+		// There was a connection error of some sort
+		console.log("connection error!");
 	};
-
 	request.send();
-}
+};
 
 //create chart list on landing
 function createChartEntryList(data){
@@ -54,7 +52,7 @@ function createChartEntryList(data){
 		}
 	});
 
-};
+}
 
 
 //kick off chart creation
@@ -62,7 +60,7 @@ function assessChartType(evt){
 	//filter data to click data
 	let targetData = chartData.filter(function(entry){
 		return evt.target.attributes[1].nodeValue === entry.id;
-	})
+	});
 
 	//don't reload previous chart
 	if(currentChart === targetData[0].id){
@@ -86,45 +84,47 @@ function removeOldData(){
 	}
 }
 
+
 //route to chart type
 function routeToChartType(targetData, chartType){
 	let metaData = targetData;
 	let data = targetData.data;
+
+	if(chartType === "phone-line"){
+		createPhoneSubChart(metaData, data);
+	} else if(chartType === "birth-line"){
+		createBirthCountChart(metaData, data);
+	} else if(chartType === "education-bar"){
+		createEdExpenditureChart(metaData, data);
+	} else if(chartType === "health-bar"){
+		createHealthExpenditureChart(metaData, data);
+	} else if(chartType === "refugee-bar"){
+		createRefugeeStackedChart(metaData, data);
+	}
+}
+
+function createPhoneSubChart(metaData, data) {
+	//define chart constants
 	let svg = d3.select(".chart"),
 		margin = {top: 10, right: 30, bottom: 20, left: 80},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
-		g = svg.append("g").attr("transform", "translate(" + margin.left + "," +margin.top + ")");
+		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	if(chartType === "phone-line"){
-		createPhoneSubChart(metaData, data, svg, margin, width, height, g);
-	} else if(chartType === "birth-line"){
-		createBirthCountChart(metaData, data, svg, margin, width, height, g);
-	} else if(chartType === "education-bar"){
-		createEdExpenditureChart(metaData, data, svg, margin, width, height, g);
-	} else if(chartType === "health-bar"){
-		createHealthExpenditureChart(metaData, data, svg, margin, width, height, g);		
-	} else if(chartType === "refugee-bar"){
-		createRefugeeStackedChart(metaData, data, svg, margin, width, height, g);
-	}
-};
-
-function createPhoneSubChart(metaData, data, svg, margin, width, height, g) {
 	let chartSpecificData = data;
 
 	let max = d3.max(d3.entries(chartSpecificData), function(d) {
 		return d3.max(d3.entries(d.value), function(e, i) {
-			if(i === 1){
-      			return d3.max(e.value, function(f) { return +f.value; });
-      		}
-  		});
+			if(i === 1)
+				return d3.max(e.value, function(f) { return +f.value; });
+		});
 	});
 
 	let x = d3.scaleTime().range([0, width]),
 		y = d3.scaleLinear().range([height, 0]);
-		let parseYear = d3.timeParse("%Y");
+	let parseYear = d3.timeParse("%Y");
 
-	x.domain(d3.extent(chartSpecificData[0].values, function(d) { return parseYear(d.year)}))
+	x.domain(d3.extent(chartSpecificData[0].values, function(d) { return parseYear(d.year)}));
 	y.domain([0, max]);
 
 	let line = d3.line()
@@ -142,7 +142,7 @@ function createPhoneSubChart(metaData, data, svg, margin, width, height, g) {
 	g.append("g")
 		.attr("class", "axis axis-y")
 		.style("stroke-width", ".1")
-		.call(d3.axisLeft(y))
+		.call(d3.axisLeft(y));
 
 	let lines = g.selectAll(".paths")
 		.data(chartSpecificData)
@@ -152,7 +152,7 @@ function createPhoneSubChart(metaData, data, svg, margin, width, height, g) {
 
 	lines.append("path")
 		.attr("class", "line")
-      	.attr("d", function(d) { return line(d.values); })
+		.attr("d", function(d) { return line(d.values); })
 		.style("stroke", metaData.colors[0])
 		.style("stroke-width", "2px")
 		.style("fill", "none");
@@ -167,10 +167,18 @@ function createPhoneSubChart(metaData, data, svg, margin, width, height, g) {
 		.text(function(d) { return d.id; });
 }
 
-function createBirthCountChart(metaData, data, svg, margin, width, height, g) {
+function createBirthCountChart(metaData, data) {
+	//define chart constants
+	let svg = d3.select(".chart"),
+		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		width = 600 - margin.left - margin.right,
+		height = 300 - margin.top - margin.bottom,
+		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 	let chartSpecificData = [];
 
 	//normalize data
+	//can we clean up this for loop - is there a better way to reformat the data?
 	for(let i = 0; i < data.length; i++){
 		let tempEntry = {};
 		tempEntry.state = data[i].state;
@@ -184,23 +192,22 @@ function createBirthCountChart(metaData, data, svg, margin, width, height, g) {
 			tempObj["year"] = obj.year;
 			tempObj["value"] = Math.floor(obj.value/normalizedVal);
 			return tempEntry.values.push(tempObj);
-		})
+		});
 		chartSpecificData.push(tempEntry);
 	}
 
 	let max = d3.max(d3.entries(chartSpecificData), function(d) {
 		return d3.max(d3.entries(d.value), function(e, i) {
-			if(i === 3){
-      			return d3.max(e.value, function(f) { return +f.value; });
-      		}
-  		});
+			if(i === 3)
+				return d3.max(e.value, function(f) { return +f.value; });
+		});
 	});
 
 	let x = d3.scaleTime().range([0, width]),
 		y = d3.scaleLinear().range([height, 0]);
-		let parseYear = d3.timeParse("%Y");
+	let parseYear = d3.timeParse("%Y");
 
-	x.domain(d3.extent(chartSpecificData[0].values, function(d) { return parseYear(d.year)}))
+	x.domain(d3.extent(chartSpecificData[0].values, function(d) { return parseYear(d.year); }));
 	y.domain([0, max]);
 
 	let line = d3.line()
@@ -218,7 +225,7 @@ function createBirthCountChart(metaData, data, svg, margin, width, height, g) {
 	g.append("g")
 		.attr("class", "axis axis-y")
 		.style("stroke-width", ".1")
-		.call(d3.axisLeft(y))
+		.call(d3.axisLeft(y));
 
 	let lines = g.selectAll(".paths")
 		.data(chartSpecificData)
@@ -228,13 +235,20 @@ function createBirthCountChart(metaData, data, svg, margin, width, height, g) {
 
 	lines.append("path")
 		.attr("class", "line")
-      	.attr("d", function(d) { return line(d.values); })
+		.attr("d", function(d) { return line(d.values); })
 		.style("stroke", metaData.colors[0])
 		.style("stroke-width", "2px")
 		.style("fill", "none");
 }
 
-function createEdExpenditureChart(metaData, data, svg, margin, width, height, g){
+function createEdExpenditureChart(metaData, data){
+	//define chart constants
+	let svg = d3.select(".chart"),
+		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		width = 600 - margin.left - margin.right,
+		height = 300 - margin.top - margin.bottom,
+		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 	//define scales
 	let	x = d3.scaleLinear().rangeRound([0, width]),
 		y = d3.scaleBand().rangeRound([height, 0]).padding(0.2);
@@ -278,14 +292,19 @@ function createEdExpenditureChart(metaData, data, svg, margin, width, height, g)
 		.style("fill", metaData.colors[0]);
 }
 
-function createHealthExpenditureChart(metaData, data, svg, margin, width, height, g){
+function createHealthExpenditureChart(metaData, data){
+	//define chart constants
+	let svg = d3.select(".chart"),
+		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		width = 600 - margin.left - margin.right,
+		height = 300 - margin.top - margin.bottom,
+		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	let max = d3.max(d3.entries(data), function(d) {
 		return d3.max(d3.entries(d.value), function(e, i) {
-			if(i === 1){
-      			return d3.max(e.value, function(f) { return +f.value; });
-      		}
-  		});
+			if(i === 1)
+				return d3.max(e.value, function(f) { return +f.value; });
+		});
 	});
 
 	//define scales
@@ -323,13 +342,13 @@ function createHealthExpenditureChart(metaData, data, svg, margin, width, height
 		g.append("g")
 			.attr("class", "x-axis")
 			.attr("transform", "translate(0," + height + ")")
-			.attr("stroke-width", .1)
+			.attr("stroke-width", 0.1)
 			.call(d3.axisBottom(x0));
 
 		//append y axis to svg 
 		g.append("g")
 			.attr("class", "y-axis")
-			.style("stroke-width", .1)
+			.style("stroke-width", 0.1)
 		.call(d3.axisLeft(y))
 			.append("text")
 			.attr("x", 0)
@@ -342,9 +361,16 @@ function createHealthExpenditureChart(metaData, data, svg, margin, width, height
 		d3.selectAll(".tick > text")
 			.style("transform", "translateY(5px) rotate(-25deg)");
 
-}		
+}
 
-function createRefugeeStackedChart(metaData, data, svg, margin, width, height, g){
+function createRefugeeStackedChart(metaData, data){
+	//define chart constants
+	let svg = d3.select(".chart"),
+		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		width = 600 - margin.left - margin.right,
+		height = 300 - margin.top - margin.bottom,
+		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 	let x = d3.scaleBand().rangeRound([0, width]).padding(0.5),
 		y = d3.scaleLinear().rangeRound([height, 0]);
 
@@ -361,7 +387,7 @@ function createRefugeeStackedChart(metaData, data, svg, margin, width, height, g
 			dataVals.push(y0);
 			dataVals.push(y1);
 			dataVals.push(y2);
-		})
+		});
 
 		//sort data
 		data.sort(function(a, b) { return b.total - a.total; });
@@ -405,7 +431,7 @@ function createRefugeeStackedChart(metaData, data, svg, margin, width, height, g
 			.attr("transform", "rotate(-90)")
 			.attr("dy", "0.32em")
 			.attr("fill", "#000")
-			.text("Number of Persons")
+			.text("Number of Persons");
 
 		let legend = g.append("g")
 			.attr("font-family", "sans-serif")
@@ -426,7 +452,6 @@ function createRefugeeStackedChart(metaData, data, svg, margin, width, height, g
 			.attr("y", 9.5)
 			.attr("dy", "0.32em")
 			.text(function(d) { return d; });
-
 }
 
 
