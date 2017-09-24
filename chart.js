@@ -106,7 +106,7 @@ function routeToChartType(targetData, chartType){
 function createPhoneSubChart(metaData, data) {
 	//define chart constants
 	let svg = d3.select(".chart"),
-		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		margin = {top: 10, right: 30, bottom: 20, left: 30},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -170,7 +170,7 @@ function createPhoneSubChart(metaData, data) {
 function createBirthCountChart(metaData, data) {
 	//define chart constants
 	let svg = d3.select(".chart"),
-		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		margin = {top: 10, right: 30, bottom: 20, left: 30},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -244,7 +244,7 @@ function createBirthCountChart(metaData, data) {
 function createEdExpenditureChart(metaData, data){
 	//define chart constants
 	let svg = d3.select(".chart"),
-		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		margin = {top: 10, right: 30, bottom: 20, left: 30},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -295,7 +295,7 @@ function createEdExpenditureChart(metaData, data){
 function createHealthExpenditureChart(metaData, data){
 	//define chart constants
 	let svg = d3.select(".chart"),
-		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		margin = {top: 10, right: 30, bottom: 20, left: 30},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -366,7 +366,7 @@ function createHealthExpenditureChart(metaData, data){
 function createRefugeeStackedChart(metaData, data){
 	//define chart constants
 	let svg = d3.select(".chart"),
-		margin = {top: 10, right: 30, bottom: 20, left: 80},
+		margin = {top: 10, right: 30, bottom: 20, left: 30},
 		width = 600 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");

@@ -67,14 +67,26 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		
 		.datavis-container {
 			margin-top: 10px;
+			margin-left: 10px;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			grid-gap: 10px;
+			grid-auto-rows: minmax(100px, auto);
+		}
+
+		.projects-title {
 		}
 
 		.chart-list {
+			/* 
 			display: inline-block;
 			float: left;
 			margin-top: 10px;
 			max-height: 300px;
 			max-width: 420px;
+			*/
+			grid-column: 1 / 2;
+  			grid-row: 1;
 		}
 
 		.chart-entry {
@@ -88,9 +100,13 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 
 		.chart-container {
+			/* 
 			display: inline-block;
 			margin-left: 10px;
-			width: 55%;
+			width: 55%; 
+			*/
+			grid-column: 2/2;
+  			grid-row: 1;
 		}
 
 		.chart-entry-source {
@@ -158,8 +174,7 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 		
 		.blogs-container {
-			margin-top: 5px;
-			width: 150%;
+			margin-top: 5px;	
 		}
 
 		.blogs-container a {
@@ -167,7 +182,7 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 
 		.blog-post {
-		    margin-left: 20px;
+		    margin-left: 10px;
 			margin-top: -5px;
 			font-size: 18px;
 		}
@@ -205,6 +220,7 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 		
 		@media screen and (max-width: 900px){
+			/* 
 			.chart-container{
 				margin: 0 auto;
 				display: block;			
@@ -214,6 +230,7 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 				width: 100%;
 				margin-bottom: 100px;
 			}
+			*/
 
 			.box {
 				margin: 0 auto;
@@ -236,8 +253,8 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 	</header>
 
 	<div class="content-container">
+		<h3 class="projects-title">Data Visualizations</h3>
 		<div class="datavis-container">
-			<h3 class="projects-title">Data Visualizations</h3>
 			<div class="chart-list"></div>
 			<div class="chart-container">
 				<svg class="chart" viewBox="0 0 600 310"
