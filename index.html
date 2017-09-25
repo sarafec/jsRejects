@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=.6">
 	<title>Earlier Work | Sara Fecadu</title>
 	<script src="
 https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
@@ -78,13 +78,6 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 
 		.chart-list {
-			/* 
-			display: inline-block;
-			float: left;
-			margin-top: 10px;
-			max-height: 300px;
-			max-width: 420px;
-			*/
 			grid-column: 1 / 2;
   			grid-row: 1;
 		}
@@ -99,12 +92,7 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 			outline: thick dotted cadetblue;
 		}
 
-		.chart-container {
-			/* 
-			display: inline-block;
-			margin-left: 10px;
-			width: 55%; 
-			*/
+		.chart {
 			grid-column: 2/2;
   			grid-row: 1;
 		}
@@ -220,17 +208,9 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
 		}
 		
 		@media screen and (max-width: 900px){
-			/* 
-			.chart-container{
-				margin: 0 auto;
-				display: block;			
+			.header {
+				margin-bottom: 20px;
 			}
-			.chart-list {
-				display: block;			
-				width: 100%;
-				margin-bottom: 100px;
-			}
-			*/
 
 			.box {
 				margin: 0 auto;
