@@ -1,6 +1,6 @@
 ### JS Rejects: my early adventures in JavaScript  
 
-This repository and [website](https://sarafec.github.io/jsRejects/) contain links and code for my early JavaScrpt projects.  
+This repository and [website](https://sarafec.github.io/jsRejects/) contain links and code for my early JavaScript projects.  
   
 Projects
 * [The Worst Clock](https://sarafec.github.io/theWorstClock/)  
